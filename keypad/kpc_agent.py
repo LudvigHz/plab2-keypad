@@ -1,15 +1,6 @@
 class KPCAgent:
     """The agent communicating with the finite state machine, keypad and led board"""
 
-    _keypad = None
-    _led_board = None
-
-    _passcode_buffer = ""
-    _passcode_file = ""
-
-    _led_id = None
-    _led_duration = None
-
     def _init_passcode_entry(self):
         """ Clear the passcode-buffer and initiate a ”power up” lighting sequence on the LED Board"""
 
@@ -30,7 +21,7 @@ class KPCAgent:
         """Flash all leds"""
 
     def _twinkle_leds(self):
-        """Twinkle all leds(...?)"""
+        """Twinkle all leds"""
 
     def _exit_action(self):
         """Play the "power down" lighting sequence"""
