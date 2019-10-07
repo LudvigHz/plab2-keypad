@@ -1,6 +1,12 @@
+"""
+Module containing LEDBoard controller class
+"""
 import time
 
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    import EmulatorGUI as GPIO
 
 
 class LEDBoard:
@@ -32,14 +38,14 @@ class LEDBoard:
 
     def turn_off_all_leds(self):
         """Turn all LEDs off"""
-        for led in self.GPIO_PINS.keys():
+        for pin in self.GPIO_PINS.items():
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
 
     def flash_all_leds(self, seconds):
         """Flash all LEDs for <time> seconds"""
         start = time.time()
-        while time.time() - start < time:
+        while time.time() - start < seconds:
             self.light_all_leds()
             time.sleep(0.5)  # Can be tweaked
             self.turn_off_all_leds()
@@ -48,7 +54,7 @@ class LEDBoard:
     def twinkle_all_leds(self, seconds):
         """Twinkle all LEDs for <time> seconds in order"""
         start = time.time()
-        while time.time() - start < time:
+        while time.time() - start < seconds:
             for led in self.GPIO_PINS.keys():
                 self.light_led(led)
                 time.sleep(0.3)  # Can be tweaked
