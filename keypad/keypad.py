@@ -1,4 +1,4 @@
-from EmulatorGUI import GPIO
+from RPiSim.GPIO import GPIO
 
 
 class Keypad:
@@ -7,5 +7,7 @@ class Keypad:
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
-
-
+        for rp in Keypad.ROW_PINS:
+            GPIO.setup(rp, GPIO.OUT)
+        for cp in Keypad.COLUMN_PINS:
+            GPIO.setup(cp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
