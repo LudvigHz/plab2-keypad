@@ -1,5 +1,9 @@
+"""Module contains class for the finite state machine"""
+
+
 class FiniteStateMachine:
-    """Rule-based finite state machine that asks agent for input, applies rules and reacts accordingly """
+    """Rule-based finite state machine that asks agent for input, applies rules and reacts
+    accordingly """
 
     def _add_rule(self):
         """Add a new rule to the end of the FSM’s rule list"""
@@ -14,8 +18,10 @@ class FiniteStateMachine:
         """Check whether the conditions of a rule are met"""
 
     def _fire_rule(self):
-        """use the consequent of a rule to set the next state of the FSM AND call the appropriate agent action method"""
+        """use the consequent of a rule to set the next state of the FSM AND call the appropriate
+        agent action method"""
 
     def _main_loop(self):
-        """begin in the FSM’s default initial state and then repeatedly call get next signal and run rules until the
+        """begin in the FSM’s default initial state and then repeatedly call get next signal and
+        run rules until the
         FSM enters its default final state"""
