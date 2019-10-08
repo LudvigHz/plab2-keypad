@@ -8,18 +8,20 @@ class FiniteStateMachine:
 
     _current_state = None
     _current_signal = ''
-    _rule_list: list[Rule] = []
+    _rule_list: [Rule] = []
 
     def __init__(self):
-        # TODO implement
+        # TODO implement - fill _rule_list with correct rules in correct order
         return
 
     def _add_rule(self, rule: Rule):
         """Add a new rule to the end of the FSM’s rule list"""
-        self._rule_list.add(rule)
+        self._rule_list.append(rule)
 
     def _get_next_signal(self) -> str:
         """Query the agent for the next signal"""
+        # TODO call agent.next_signal()
+        return ''
 
     def _run_rules(self):
         """Go through the rule set, in order, applying each rule until one of the rules is fired.
