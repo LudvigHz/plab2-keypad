@@ -1,4 +1,4 @@
-# TDT4113 project 5 - Keypad [![Actions Status](https://github.com/LudvigHz/plab2-keypad/workflows/.github/workflows/keypad/badge.svg)](https://github.com/ludvighz/plab2-keypad/actions)
+# TDT4113 project 5 - Keypad [![Actions Status](https://github.com/LudvigHz/plab2-keypad/workflows/Keypad%20action/badge.svg)](https://github.com/ludvighz/plab2-keypad/actions)
 > Repo for TDT4113 keypad assignment 2019
 
 ## Development
