@@ -6,7 +6,7 @@ import time
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    import EmulatorGUI as GPIO
+    from RPiSim.GPIO import GPIO
 
 
 class LEDBoard:
