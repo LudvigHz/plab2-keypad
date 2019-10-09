@@ -3,8 +3,13 @@
 import unittest
 
 from keypad.finite_state_machine.rule import (
-    STATES, Rule, signal_is_anything, signal_is_asterisk, signal_is_digit,
-    signal_is_square)
+    STATES,
+    Rule,
+    signal_is_anything,
+    signal_is_asterisk,
+    signal_is_digit,
+    signal_is_square,
+)
 
 
 class MyTestCase(unittest.TestCase):
