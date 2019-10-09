@@ -2,7 +2,7 @@
 
 
 # The legal states
-STATES = ['INIT', 'READ', 'VERIFY', 'ACTIVE', 'READ2', 'READ3', 'END']
+STATES = ["INIT", "READ", "VERIFY", "ACTIVE", "READ2", "READ3", "END"]
 
 
 class Rule:
@@ -15,7 +15,7 @@ class Rule:
 
     def __init__(self, trigger_state: str, trigger_signal: str, new_state: str, action):
         if trigger_state not in STATES or new_state not in STATES:
-            raise Exception('ILLEGAL STATE CHOSEN')
+            raise Exception("ILLEGAL STATE CHOSEN")
 
         self._trigger_state = trigger_state
         self._trigger_signal = trigger_signal
@@ -32,6 +32,6 @@ class Rule:
         """Gets the next state"""
         return self._new_state
 
-    def get_action(self) -> str:
+    def get_action(self):
         """Gets the action"""
         return self._action

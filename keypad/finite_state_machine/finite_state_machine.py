@@ -1,5 +1,7 @@
 """Module contains class for the finite state machine"""
+
 from keypad.finite_state_machine.rule import Rule
+from keypad.kpc_agent import KPCAgent
 
 
 class FiniteStateMachine:
@@ -7,21 +9,21 @@ class FiniteStateMachine:
     accordingly """
 
     _current_state = None
-    _current_signal = ''
+    _current_signal = ""
     _rule_list: [Rule] = []
+    _agent: KPCAgent = None
 
     def __init__(self):
-        # TODO implement - fill _rule_list with correct rules in correct order
-        return
+        """Add the correct rules to the rule list"""
+        # TODO
 
     def _add_rule(self, rule: Rule):
         """Add a new rule to the end of the FSM’s rule list"""
         self._rule_list.append(rule)
 
-    def _get_next_signal(self) -> str:
+    def _get_next_signal(self):
         """Query the agent for the next signal"""
-        # TODO call agent.next_signal()
-        return ''
+        self._current_signal = self._agent.get_next_signal()
 
     def _run_rules(self):
         """Go through the rule set, in order, applying each rule until one of the rules is fired.
@@ -30,7 +32,7 @@ class FiniteStateMachine:
             if self._apply_rule(rule):
                 self._fire_rule(rule)
                 return
-        raise Exception('NO RULE WAS FIRED')
+        raise Exception("NO RULE WAS FIRED")
 
     def _apply_rule(self, rule: Rule) -> bool:
         """Check whether the conditions of a rule are met"""
@@ -42,11 +44,12 @@ class FiniteStateMachine:
         """use the consequent of a rule to set the next state of the FSM AND call the appropriate
         agent action method"""
         self._current_state = rule.get_new_state()
-        # TODO call agent.do_action(rule.get_action)
+        rule.get_action()(self._agent, self._current_signal)
 
     def _main_loop(self):
         """begin in the FSM’s default initial state and then repeatedly call get next signal and
         run rules until the FSM enters its default final state"""
-        while self._current_state != 'END':
+        while self._current_state != "END":
             self._current_signal = self._get_next_signal()
             self._run_rules()
+        self._agent.exit_action()
