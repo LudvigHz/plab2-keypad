@@ -3,7 +3,14 @@ trigger signal"""
 
 
 # The legal states
-STATES = ["INIT", "READ", "VERIFY", "ACTIVE", "READ2", "READ3", "END"]
+class STATES:
+    INIT = 'INIT'
+    READ = 'READ'
+    VERIFY = 'VERIFY'
+    ACTIVE = 'ACTIVE'
+    READ2 = 'READ2'
+    READ3 = 'READ3'
+    END = 'END'
 
 
 class Rule:
@@ -16,7 +23,7 @@ class Rule:
     _action = None
 
     def __init__(self, trigger_state: str, trigger_signal, new_state: str, action):
-        if trigger_state not in STATES or new_state not in STATES:
+        if not hasattr(STATES, trigger_state) or not hasattr(STATES, new_state):
             raise Exception("ILLEGAL STATE CHOSEN")
 
         self._trigger_state = trigger_state

@@ -8,14 +8,14 @@ from keypad.finite_state_machine.rule import (
     signal_is_asterisk,
     signal_is_digit,
     signal_is_square,
-)
+    STATES)
 
 
 class MyTestCase(unittest.TestCase):
     """Tests for Rule"""
 
-    trigger_state = "INIT"
-    new_state = "READ"
+    trigger_state = STATES.INIT
+    new_state = STATES.READ
     action = "placeholder"
     trigger_signal = signal_is_digit
     signal = "5"
