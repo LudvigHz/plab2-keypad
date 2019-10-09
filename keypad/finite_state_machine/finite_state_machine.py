@@ -1,6 +1,7 @@
 """Module contains class for the finite state machine"""
 
-from keypad.finite_state_machine.rule import Rule
+from keypad.finite_state_machine.rule import Rule, signal_is_digit, signal_is_square,\
+    signal_is_asterisk, signal_is_anything
 from keypad.kpc_agent import KPCAgent
 
 
@@ -9,21 +10,23 @@ class FiniteStateMachine:
     accordingly """
 
     _current_state = None
-    _current_signal = ""
+    _current_signal = "INIT"
     _rule_list: [Rule] = []
     _agent: KPCAgent = None
 
-    def __init__(self):
+    def __init__(self, agent: KPCAgent):
         """Add the correct rules to the rule list"""
-        # TODO
+        self._agent = agent
+        self._add_rule(Rule('INIT', signal_is_anything, 'END', self._agent.init_passcode_entry))
+        # TODO add rest of rules
 
     def _add_rule(self, rule: Rule):
-        """Add a new rule to the end of the FSM’s rule list"""
+        """Appends a new rule to the end of the FSM’s rule list"""
         self._rule_list.append(rule)
 
     def _get_next_signal(self):
         """Query the agent for the next signal"""
-        self._current_signal = self._agent.get_next_signal()
+        self._current_signal = self._agent.get_next_signal(self._agent)
 
     def _run_rules(self):
         """Go through the rule set, in order, applying each rule until one of the rules is fired.
@@ -46,10 +49,11 @@ class FiniteStateMachine:
         self._current_state = rule.get_new_state()
         rule.get_action()(self._agent, self._current_signal)
 
-    def _main_loop(self):
+    def main_loop(self):
         """begin in the FSM’s default initial state and then repeatedly call get next signal and
         run rules until the FSM enters its default final state"""
         while self._current_state != "END":
-            self._current_signal = self._get_next_signal()
+            self._get_next_signal()
+            print('Signal: ', self._current_signal)
             self._run_rules()
         self._agent.exit_action()

@@ -1,7 +1,7 @@
 class KPCAgent:
     """The agent communicating with the finite state machine, keypad and led board"""
 
-    def _init_passcode_entry(self):
+    def init_passcode_entry(self):
         """ Clear the passcode-buffer and initiate a ”power up” lighting sequence on the LED
         Board"""
 
