@@ -4,7 +4,7 @@
 class MockAgent:
     """Used to test fsm"""
 
-    def init_passcode_entry(self):
+    def init_passcode_entry(self, signal: str):
         """Power up"""
         print('Power up')
 

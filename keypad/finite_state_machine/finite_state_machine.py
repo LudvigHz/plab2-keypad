@@ -9,15 +9,20 @@ class FiniteStateMachine:
     """Rule-based finite state machine that asks agent for input, applies rules and reacts
     accordingly """
 
-    _current_state = None
-    _current_signal = "INIT"
+    _current_state = 'INIT'
+    _current_signal = None
     _rule_list: [Rule] = []
     _agent: KPCAgent = None
 
-    def __init__(self, agent: KPCAgent):
+    def __init__(self, agent):
         """Add the correct rules to the rule list"""
         self._agent = agent
-        self._add_rule(Rule('INIT', signal_is_anything, 'READ', self._agent.init_passcode_entry))
+        self._add_rule(
+            Rule(
+                'INIT',
+                signal_is_anything,
+                'READ',
+                self._agent.init_passcode_entry))
         # TODO add rest of rules
 
     def _add_rule(self, rule: Rule):
@@ -47,7 +52,7 @@ class FiniteStateMachine:
         """use the consequent of a rule to set the next state of the FSM AND call the appropriate
         agent action method"""
         self._current_state = rule.get_new_state()
-        rule.get_action()(self._agent, self._current_signal)
+        rule.get_action()(self._current_signal)
 
     def main_loop(self):
         """begin in the FSM’s default initial state and then repeatedly call get next signal and

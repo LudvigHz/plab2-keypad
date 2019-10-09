@@ -12,10 +12,12 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         """Setup run before each test"""
+        self.first_state = 'INIT'
+        self.second_state = 'READ'
         self.agent = MockAgent()
         self.fsm = FiniteStateMachine(self.agent)
-        self.rule = Rule('INIT', signal_is_anything, 'READ', self.agent.init_passcode_entry)
-        self.rule2 = Rule('READ', signal_is_anything, 'READ', self.agent.init_passcode_entry)
+        self.rule = Rule(self.first_state, signal_is_anything, self.second_state, self.agent.init_passcode_entry)
+        self.rule2 = Rule(self.second_state, signal_is_anything, self.second_state, self.agent.init_passcode_entry)
 
     def test_add_rule(self):
         """Test add rule"""
@@ -31,7 +33,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_apply_rule(self):
         """Test apply rule"""
-        self.fsm._current_state = 'INIT'
+        self.fsm._current_state = self.first_state
         self.fsm._current_signal = '5'
 
         self.assertTrue(self.fsm._apply_rule(self.rule))
@@ -39,6 +41,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_fire_rule(self):
         """Tests fire rule"""
+        self.fsm._fire_rule(self.rule)
+        self.assertEqual(self.fsm._current_state, self.second_state)
+
+    def test_run_rules(self):
+        """Tests the iteration of rules"""
+
+
 
 
 if __name__ == '__main__':
