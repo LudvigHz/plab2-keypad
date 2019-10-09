@@ -11,3 +11,7 @@ class MockAgent:
     def get_next_signal(self) -> str:
         """Returns next signal to fsm"""
         return "5"
+
+    def exit_action(self):
+        """Exit fsm and application"""
+        print('k bye')

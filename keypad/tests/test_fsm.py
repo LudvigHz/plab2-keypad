@@ -3,7 +3,7 @@
 import unittest
 
 from keypad.finite_state_machine.finite_state_machine import FiniteStateMachine
-from keypad.finite_state_machine.rule import Rule, signal_is_anything
+from keypad.finite_state_machine.rule import Rule, signal_is_anything, STATES, signal_is_digit
 from keypad.mock_agent import MockAgent
 
 
@@ -12,27 +12,30 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         """Setup run before each test"""
-        self.first_state = "INIT"
-        self.second_state = "READ"
+        self.first_state = STATES.INIT
+        self.second_state = STATES.READ
+        self.end_state = STATES.END
+
         self.agent = MockAgent()
         self.fsm = FiniteStateMachine(self.agent)
         self.rule = Rule(
             self.first_state,
-            signal_is_anything,
+            signal_is_digit,
             self.second_state,
             self.agent.init_passcode_entry,
         )
+
         self.rule2 = Rule(
             self.second_state,
-            signal_is_anything,
-            self.second_state,
+            signal_is_digit,
+            self.end_state,
             self.agent.init_passcode_entry,
         )
 
     def test_add_rule(self):
         """Test add rule"""
         first_length = len(self.fsm._rule_list)
-        self.fsm._add_rule(self.rule)
+        self.fsm.add_rule(self.rule)
         second_length = len(self.fsm._rule_list)
         self.assertTrue((second_length - first_length) == 1)
 
@@ -56,6 +59,17 @@ class MyTestCase(unittest.TestCase):
 
     def test_run_rules(self):
         """Tests the iteration of rules"""
+        self.fsm._current_signal = '5'
+        self.fsm.add_rule(self.rule2)
+        self.fsm._run_rules()
+
+        self.fsm._current_signal = '*'
+        self.assertRaises(Exception, self.fsm._run_rules)
+
+    def test_main_loop(self):
+        """Test the main loop"""
+        self.fsm.add_rule(self.rule2)
+        self.fsm.main_loop()
 
 
 if __name__ == "__main__":

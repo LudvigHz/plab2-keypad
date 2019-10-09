@@ -22,12 +22,9 @@ class FiniteStateMachine:
     def __init__(self, agent):
         """Add the correct rules to the rule list"""
         self._agent = agent
-        self._add_rule(
-            Rule(STATES.INIT, signal_is_anything, STATES.READ, self._agent.init_passcode_entry)
-        )
-        # TODO add rest of rules
+        # TODO leave the adding of rules ot the agent?
 
-    def _add_rule(self, rule: Rule):
+    def add_rule(self, rule: Rule):
         """Appends a new rule to the end of the FSM’s rule list"""
         self._rule_list.append(rule)
 
