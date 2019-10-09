@@ -4,11 +4,7 @@ import unittest
 
 from keypad.finite_state_machine.finite_state_machine import FiniteStateMachine
 from keypad.finite_state_machine.rule import (
-    STATES,
-    Rule,
-    signal_is_anything,
-    signal_is_digit,
-)
+    STATES, Rule, signal_is_anything, signal_is_digit)
 from keypad.mock_agent import MockAgent
 
 
