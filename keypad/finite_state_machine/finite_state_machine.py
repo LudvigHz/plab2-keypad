@@ -17,7 +17,7 @@ class FiniteStateMachine:
     def __init__(self, agent: KPCAgent):
         """Add the correct rules to the rule list"""
         self._agent = agent
-        self._add_rule(Rule('INIT', signal_is_anything, 'END', self._agent.init_passcode_entry))
+        self._add_rule(Rule('INIT', signal_is_anything, 'READ', self._agent.init_passcode_entry))
         # TODO add rest of rules
 
     def _add_rule(self, rule: Rule):
@@ -26,7 +26,7 @@ class FiniteStateMachine:
 
     def _get_next_signal(self):
         """Query the agent for the next signal"""
-        self._current_signal = self._agent.get_next_signal(self._agent)
+        self._current_signal = self._agent.get_next_signal()
 
     def _run_rules(self):
         """Go through the rule set, in order, applying each rule until one of the rules is fired.
