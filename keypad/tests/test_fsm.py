@@ -12,12 +12,22 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         """Setup run before each test"""
-        self.first_state = 'INIT'
-        self.second_state = 'READ'
+        self.first_state = "INIT"
+        self.second_state = "READ"
         self.agent = MockAgent()
         self.fsm = FiniteStateMachine(self.agent)
-        self.rule = Rule(self.first_state, signal_is_anything, self.second_state, self.agent.init_passcode_entry)
-        self.rule2 = Rule(self.second_state, signal_is_anything, self.second_state, self.agent.init_passcode_entry)
+        self.rule = Rule(
+            self.first_state,
+            signal_is_anything,
+            self.second_state,
+            self.agent.init_passcode_entry,
+        )
+        self.rule2 = Rule(
+            self.second_state,
+            signal_is_anything,
+            self.second_state,
+            self.agent.init_passcode_entry,
+        )
 
     def test_add_rule(self):
         """Test add rule"""
@@ -29,12 +39,12 @@ class MyTestCase(unittest.TestCase):
     def test_get_next_signal(self):
         """Test that fsm fetches signal from agent"""
         self.fsm._get_next_signal()
-        self.assertTrue(self.fsm._current_signal == '5')
+        self.assertTrue(self.fsm._current_signal == "5")
 
     def test_apply_rule(self):
         """Test apply rule"""
         self.fsm._current_state = self.first_state
-        self.fsm._current_signal = '5'
+        self.fsm._current_signal = "5"
 
         self.assertTrue(self.fsm._apply_rule(self.rule))
         self.assertFalse(self.fsm._apply_rule(self.rule2))
@@ -48,7 +58,5 @@ class MyTestCase(unittest.TestCase):
         """Tests the iteration of rules"""
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

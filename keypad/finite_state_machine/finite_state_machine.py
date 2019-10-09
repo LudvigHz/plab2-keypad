@@ -1,9 +1,12 @@
 """Module contains class for the finite state machine"""
 
-from keypad.finite_state_machine.rule import (Rule, signal_is_anything,
-                                              signal_is_asterisk,
-                                              signal_is_digit,
-                                              signal_is_square)
+from keypad.finite_state_machine.rule import (
+    Rule,
+    signal_is_anything,
+    signal_is_asterisk,
+    signal_is_digit,
+    signal_is_square,
+)
 from keypad.kpc_agent import KPCAgent
 
 
@@ -11,7 +14,7 @@ class FiniteStateMachine:
     """Rule-based finite state machine that asks agent for input, applies rules and reacts
     accordingly """
 
-    _current_state = 'INIT'
+    _current_state = "INIT"
     _current_signal = None
     _rule_list: [Rule] = []
     _agent: KPCAgent = None
@@ -20,11 +23,8 @@ class FiniteStateMachine:
         """Add the correct rules to the rule list"""
         self._agent = agent
         self._add_rule(
-            Rule(
-                'INIT',
-                signal_is_anything,
-                'READ',
-                self._agent.init_passcode_entry))
+            Rule("INIT", signal_is_anything, "READ", self._agent.init_passcode_entry)
+        )
         # TODO add rest of rules
 
     def _add_rule(self, rule: Rule):
@@ -61,6 +61,6 @@ class FiniteStateMachine:
         run rules until the FSM enters its default final state"""
         while self._current_state != "END":
             self._get_next_signal()
-            print('Signal: ', self._current_signal)
+            print("Signal: ", self._current_signal)
             self._run_rules()
         self._agent.exit_action()

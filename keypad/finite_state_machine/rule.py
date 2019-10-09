@@ -57,13 +57,13 @@ def signal_is_anything(signal: str) -> bool:
 
 def signal_is_asterisk(signal: str) -> bool:
     """Returns true if signal is asterisk"""
-    if signal == '*':
+    if signal == "*":
         return True
     return False
 
 
 def signal_is_square(signal: str) -> bool:
     """Returns true if signal is square"""
-    if signal == '#':
+    if signal == "#":
         return True
     return False

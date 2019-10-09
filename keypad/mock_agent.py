@@ -6,8 +6,8 @@ class MockAgent:
 
     def init_passcode_entry(self, signal: str):
         """Power up"""
-        print('Power up')
+        print("Power up")
 
     def get_next_signal(self) -> str:
         """Returns next signal to fsm"""
-        return '5'
+        return "5"
