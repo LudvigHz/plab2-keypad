@@ -14,4 +14,4 @@ class MockAgent:
 
     def exit_action(self):
         """Exit fsm and application"""
-        print('k bye')
+        print("k bye")

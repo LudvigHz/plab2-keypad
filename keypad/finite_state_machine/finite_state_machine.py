@@ -1,12 +1,13 @@
 """Module contains class for the finite state machine"""
 
 from keypad.finite_state_machine.rule import (
+    STATES,
     Rule,
     signal_is_anything,
     signal_is_asterisk,
     signal_is_digit,
     signal_is_square,
-    STATES)
+)
 from keypad.kpc_agent import KPCAgent
 
 
@@ -22,7 +23,7 @@ class FiniteStateMachine:
     def __init__(self, agent):
         """Add the correct rules to the rule list"""
         self._agent = agent
-        # TODO leave the adding of rules ot the agent?
+        # TODO leave the adding of rules to the agent?
 
     def add_rule(self, rule: Rule):
         """Appends a new rule to the end of the FSM’s rule list"""

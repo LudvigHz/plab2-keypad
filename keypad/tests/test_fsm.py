@@ -3,7 +3,12 @@
 import unittest
 
 from keypad.finite_state_machine.finite_state_machine import FiniteStateMachine
-from keypad.finite_state_machine.rule import Rule, signal_is_anything, STATES, signal_is_digit
+from keypad.finite_state_machine.rule import (
+    STATES,
+    Rule,
+    signal_is_anything,
+    signal_is_digit,
+)
 from keypad.mock_agent import MockAgent
 
 
@@ -59,11 +64,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_run_rules(self):
         """Tests the iteration of rules"""
-        self.fsm._current_signal = '5'
+        self.fsm._current_signal = "5"
         self.fsm.add_rule(self.rule2)
         self.fsm._run_rules()
 
-        self.fsm._current_signal = '*'
+        self.fsm._current_signal = "*"
         self.assertRaises(Exception, self.fsm._run_rules)
 
     def test_main_loop(self):

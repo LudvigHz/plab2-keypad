@@ -1,3 +1,6 @@
+"""File contains the KPC agent"""
+
+
 class KPCAgent:
     """The agent communicating with the finite state machine, keypad and led board"""
 

@@ -1,16 +1,17 @@
-"""File contains the rule class used in finite_state_machine, as well as functions for
-trigger signal"""
+"""File contains the rule class used in finite_state_machine functions for trigger signal and the
+legal states"""
 
 
-# The legal states
 class STATES:
-    INIT = 'INIT'
-    READ = 'READ'
-    VERIFY = 'VERIFY'
-    ACTIVE = 'ACTIVE'
-    READ2 = 'READ2'
-    READ3 = 'READ3'
-    END = 'END'
+    """The legal states for the finite state machine"""
+
+    INIT = "INIT"
+    READ = "READ"
+    VERIFY = "VERIFY"
+    ACTIVE = "ACTIVE"
+    READ2 = "READ2"
+    READ3 = "READ3"
+    END = "END"
 
 
 class Rule:
@@ -57,7 +58,7 @@ def signal_is_digit(signal: str) -> bool:
 
 def signal_is_anything(signal: str) -> bool:
     """Always returns true, as long as signal isn't empty"""
-    if len(signal) > 0:
+    if signal:
         return True
     return False
 
