@@ -25,10 +25,6 @@ jobs:
       run: |
         pip install pylint-fail-under
         pylint-fail-under --fail_under 8.0 keypad
-    - name: Lint with isort
-      run: |
-        pip install isort
-        isort -c -rc keypad
     - name: Lint with black
       run: |
         pip install black
