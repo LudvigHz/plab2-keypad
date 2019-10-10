@@ -38,9 +38,13 @@ class Charlieplexer:
             GPIO.setup(pin, GPIO.IN)
 
     def enable_all(self, seconds):
-        """Hacky method for enabling all pins for a given time"""
+        """Enable all pins for a given time"""
+        self.enable_multiple(self._available_pins, seconds)
+
+    def enable_multiple(self, pins, seconds):
+        """Turn on a set of pins. :param pins: list<int>"""
         start = time()
         while time() - start < seconds:
-            for pin in self._pins.keys():
+            for pin in pins:
                 self.enable_single(pin)
         self.disable_all()  # reset state
