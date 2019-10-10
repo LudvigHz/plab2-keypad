@@ -1,14 +1,10 @@
 """
 Module containing LEDBoard controller class
 """
+import os
 import time
 
 from keypad.utils import Charlieplexer
-
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    from RPiSim.GPIO import GPIO
 
 GPIO_PINS = {
     1: {"in": 20, "out": 21},
@@ -30,7 +26,7 @@ class LEDBoard:
 
     def setup(self):
         """Setup the led board. REQUIRED"""
-        GPIO.setmode(GPIO.BCM)
+        self.charlieplexer.setup()
 
     def light_led(self, led_number, seconds=None):
         """Light LED nr <led_number>. Optional param seconds"""
@@ -49,6 +45,7 @@ class LEDBoard:
         while time.time() - start < seconds:
             self.charlieplexer.enable_all(speed)
             time.sleep(speed)
+        self.turn_off_all_leds()  # reset state
 
     def twinkle_all_leds(self, seconds, *args, **kwargs):
         """Twinkle all LEDs for <time> seconds in order. Optional param speed (lower is faster)"""
@@ -59,10 +56,11 @@ class LEDBoard:
             for led in order:
                 self.light_led(led)
                 time.sleep(speed)
+        self.turn_off_all_leds()  # reset state
 
     def start_up_sequence(self):
         """Start the start-up sequence"""
-        for i, j in range(3, 0, -1), range(4, 7):
+        for i, j in zip(range(3, 0, -1), range(4, 7)):
             self.charlieplexer.enable_multiple([i, j], 0.2)
         self.flash_all_leds(2, 0.1)
 
@@ -70,5 +68,5 @@ class LEDBoard:
         """Start the shut-down sequence"""
         order = list(range(1, 7))
         for i in range(4):
-            self.twinkle_all_leds(order)
+            self.twinkle_all_leds(1, order=order)
             order.reverse()

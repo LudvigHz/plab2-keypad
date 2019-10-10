@@ -19,6 +19,10 @@ class Charlieplexer:
         self._pins = pins
         self._available_pins = {i["in"] for i in pins.values()}
 
+    def setup(self):
+        """Setup GPIO"""
+        GPIO.setmode(GPIO.BCM)
+
     def enable_single(self, pin):
         """Enable a single pin on the charlieplexed board"""
         inpin = self._pins[pin]["in"]
@@ -39,7 +43,7 @@ class Charlieplexer:
 
     def enable_all(self, seconds):
         """Enable all pins for a given time"""
-        self.enable_multiple(self._available_pins, seconds)
+        self.enable_multiple(self._pins.keys(), seconds)
 
     def enable_multiple(self, pins, seconds):
         """Turn on a set of pins. :param pins: list<int>"""
