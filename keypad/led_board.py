@@ -3,10 +3,21 @@ Module containing LEDBoard controller class
 """
 import time
 
+from keypad.utils import Charlieplexer
+
 try:
     import RPi.GPIO as GPIO
 except ImportError:
     from RPiSim.GPIO import GPIO
+
+GPIO_PINS = {
+    1: {"in": 21, "out": 20},
+    2: {"in": 20, "out": 21},
+    3: {"in": 21, "out": 19},
+    4: {"in": 19, "out": 21},
+    5: {"in": 20, "out": 19},
+    6: {"in": 19, "out": 20},
+}
 
 
 class LEDBoard:
@@ -14,47 +25,27 @@ class LEDBoard:
     Class for controlling the 6 LEDs
     """
 
-    GPIO_PINS = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
-
-    def __init__(self, pins={}):
-        self.GPIO_PINS = LEDBoard.GPIO_PINS.update(pins)
+    def __init__(self, pins=GPIO_PINS):
+        self.charlieplexer = Charlieplexer(pins)
 
     def setup(self):
         GPIO.setmode(GPIO.BCM)
 
     def light_led(self, led_number):
         """Light LED nr <led_number>"""
-        for pin in [pin for led, pin in self.GPIO_PINS if led != led_number]:
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, GPIO.LOW)
-        GPIO.setup(self.GPIO_PINS[led_number], GPIO.OUT)
-        GPIO.output(self.GPIO_PINS[led_number], GPIO.HIGH)
+        self.charlieplexer.enable_single(led_number)
 
-    def light_all_leds(self):
-        """Turn all LEDs on"""
-        for pin in self.GPIO_PINS.items():
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, GPIO.HIGH)
-
-    def turn_off_all_leds(self):
-        """Turn all LEDs off"""
-        for pin in self.GPIO_PINS.items():
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, GPIO.LOW)
-
-    def flash_all_leds(self, seconds):
-        """Flash all LEDs for <time> seconds"""
+    def flash_all_leds(self, seconds, speed=0.5):
+        """Flash all LEDs for <time> seconds. Optional param speed (lower is faster)"""
         start = time.time()
         while time.time() - start < seconds:
-            self.light_all_leds()
-            time.sleep(0.5)  # Can be tweaked
-            self.turn_off_all_leds()
-            time.sleep(0.5)
+            self.charlieplexer.enable_all(speed)
+            time.sleep(speed)
 
-    def twinkle_all_leds(self, seconds):
-        """Twinkle all LEDs for <time> seconds in order"""
+    def twinkle_all_leds(self, seconds, speed=0.3):
+        """Twinkle all LEDs for <time> seconds in order. Optional param speed (lower is faster)"""
         start = time.time()
         while time.time() - start < seconds:
-            for led in self.GPIO_PINS.keys():
+            for led in range(1, 7):
                 self.light_led(led)
-                time.sleep(0.3)  # Can be tweaked
+                time.sleep(speed)
