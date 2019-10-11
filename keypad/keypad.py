@@ -3,9 +3,12 @@ import os
 from time import sleep
 
 DEBUG = os.environ.get("DEBUG") == "true"
+TEST = os.environ.get("TEST") == "true"
 
 if DEBUG:
     from RPiSim.GPIO import GPIO
+elif TEST:
+    import keypad.test.mock_GPIO as GPIO
 else:
     import RPi.GPIO as GPIO
 
@@ -49,7 +52,7 @@ class Keypad:
             for column_pin in Keypad.COLUMN_PINS:
                 count = 0
                 # Check if high 20 times in a row to avoid noise
-                for i in range(20):
+                for _i in range(20):
                     if GPIO.input(column_pin) == GPIO.HIGH:
                         count += 1
                     sleep(0.002)
