@@ -25,7 +25,7 @@ class Rule:
 
     def __init__(self, trigger_state: str, trigger_signal, new_state: str, action):
         if not hasattr(STATES, trigger_state) or not hasattr(STATES, new_state):
-            raise Exception("ILLEGAL STATE CHOSEN")
+            raise ValueError("ILLEGAL STATE CHOSEN")
 
         self._trigger_state = trigger_state
         self._trigger_signal = trigger_signal

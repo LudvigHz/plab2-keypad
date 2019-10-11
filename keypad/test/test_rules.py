@@ -47,7 +47,7 @@ class MyTestCase(unittest.TestCase):
         """Test the init method and getters"""
 
         self.assertRaises(
-            Exception,
+            ValueError,
             Rule,
             self.action,
             self.trigger_signal,
@@ -56,7 +56,7 @@ class MyTestCase(unittest.TestCase):
         )
 
         self.assertRaises(
-            Exception,
+            ValueError,
             Rule,
             self.trigger_state,
             self.trigger_signal,
