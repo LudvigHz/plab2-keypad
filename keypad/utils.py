@@ -3,9 +3,12 @@ import os
 from time import time
 
 DEBUG = os.environ.get("DEBUG") == "true"
+TEST = os.environ.get("TEST") == "true"
 
 if DEBUG:
     from RPiSim.GPIO import GPIO
+elif TEST:
+    import keypad.test.mock_GPIO as GPIO
 else:
     import RPi.GPIO as GPIO
 
