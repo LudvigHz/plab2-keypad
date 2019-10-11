@@ -1,7 +1,27 @@
 """Module contains class for the finite state machine"""
 
-from keypad.finite_state_machine.rule import STATES, Rule
+from keypad.finite_state_machine.rule import *
 from keypad.kpc_agent import KPCAgent
+
+RULES = [
+    Rule(STATES.INIT, signal_is_anything, STATES.READ, KPCAgent.init_passcode_entry),
+    Rule(STATES.READ, signal_is_digit, STATES.READ, KPCAgent.append_password),
+    Rule(STATES.READ, signal_is_asterisk, STATES.VERIFY, KPCAgent.verify_login),
+    Rule(STATES.READ, signal_is_anything, STATES.INIT, KPCAgent.reset_agent),
+    Rule(
+        STATES.VERIFY, signal_is_override, STATES.ACTIVE, KPCAgent.fully_activate_agent
+    ),
+    Rule(STATES.VERIFY, signal_is_anything, STATES.INIT, KPCAgent.reset_agent),
+    Rule(STATES.ACTIVE, signal_is_asterisk, STATES.READ2, KPCAgent.init_passcode_entry),
+    Rule(STATES.READ2, signal_is_digit, STATES.READ2, KPCAgent.append_password),
+    Rule(STATES.READ2, signal_is_asterisk, STATES.READ3, KPCAgent.cache_first_password),
+    Rule(STATES.READ2, signal_is_anything, STATES.ACTIVE, KPCAgent.reset_agent),
+    Rule(STATES.READ3, signal_is_digit, STATES.READ3, KPCAgent.append_password),
+    Rule(
+        STATES.READ3, signal_is_asterisk, STATES.ACTIVE, KPCAgent.compare_new_passwords
+    ),
+    Rule(STATES.READ3, signal_is_anything, STATES.ACTIVE, KPCAgent.reset_agent),
+]
 
 
 class FiniteStateMachine:

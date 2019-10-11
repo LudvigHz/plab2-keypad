@@ -75,3 +75,10 @@ def signal_is_square(signal: str) -> bool:
     if signal == "#":
         return True
     return False
+
+
+def signal_is_override(signal: str) -> bool:
+    """ Returns true if signal is the override_signal """
+    if signal == "Y":
+        return True
+    return False
