@@ -1,5 +1,7 @@
 """Module contains class for the finite state machine"""
 
+import os
+
 from keypad.finite_state_machine.rule import (
     STATES,
     Rule,
@@ -9,7 +11,8 @@ from keypad.finite_state_machine.rule import (
     signal_is_override,
     signal_is_square,
 )
-from keypad.kpc_agent import KPCAgent
+
+TEST = os.environ.get("TEST") == "true"
 
 
 class FiniteStateMachine:
@@ -24,7 +27,8 @@ class FiniteStateMachine:
     def __init__(self, agent):
         """Add the correct rules to the rule list"""
         self._agent = agent
-        self._rule_list = rules(agent)
+        if not TEST:
+            self._rule_list = rules(agent)
 
     def add_rule(self, rule: Rule):
         """Appends a new rule to the end of the FSM’s rule list"""

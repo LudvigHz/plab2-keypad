@@ -68,8 +68,8 @@ class MyTestCase(unittest.TestCase):
             self.trigger_state, self.trigger_signal, self.new_state, self.action
         )
 
-        self.assertEqual(self.new_state, rule.get_new_state())
-        self.assertEqual(self.action, rule.get_action())
+        self.assertEqual(self.new_state, rule._new_state)
+        self.assertEqual(self.action, rule._action)
 
     def test_match(self):
         """Test the match method of Rule"""
