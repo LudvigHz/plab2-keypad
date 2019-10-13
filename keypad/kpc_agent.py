@@ -24,7 +24,7 @@ class KPCAgent:
         self._led_id = None
         self._led_dur = None
 
-    def init_passcode_entry(self):
+    def init_passcode_entry(self, *args):
         """ Clear the passcode-buffer and initiate a ”power up” lighting sequence on the LED
         Board"""
         self._current_password = []
@@ -43,7 +43,7 @@ class KPCAgent:
         """ Append a char to the current password """
         self._current_password.append(char)
 
-    def verify_login(self):
+    def verify_login(self, *args):
         """Check that the password just entered via the keypad matches that in the password file.
         Store the result (Y or N) in the override-signal and light the leds appropriately"""
         current_password_as_string = convert_list_to_string(self._current_password)
@@ -53,18 +53,18 @@ class KPCAgent:
         else:
             self.override_signal = constants.OVERRIDE_SIGNAL_PASSWORD_DECLINED
 
-    def compare_new_passwords(self):
+    def compare_new_passwords(self, *args):
         """ Check that the new passwords match """
         if self._current_password == self._temp_password:
             self.update_passcode_file()
             # TODO add signal to show user if passwords were equal
 
-    def cache_first_password(self):
+    def cache_first_password(self, *args):
         """ Cache first password in order to compare passwords later """
         self._temp_password = self._current_password
         self._current_password = []
 
-    def _validate_passcode_change(self):
+    def _validate_passcode_change(self, *args):
         """Check that the new passcode is legal, if so update passcode_file, light leds
         appropriately"""
 
@@ -75,20 +75,20 @@ class KPCAgent:
                 return
         self.update_passcode_file()
 
-    def fully_activate_agent(self):
+    def fully_activate_agent(self, *args):
         """ Complete login and activate all functionality """
         # TODO add functionality to this method if it is supposed to do something
 
-    def reset_agent(self):
+    def reset_agent(self, *args):
         """ Resets agent to initial state """
         self.override_signal = ""
         self._current_password = []
 
-    def update_passcode_file(self):
+    def update_passcode_file(self, *args):
         """ Update passcode file with the new passcode """
         self._write_password_to_file(convert_list_to_string(self._current_password))
 
-    def _get_password_from_file(self):
+    def _get_password_from_file(self, *args):
         """Gets the password from the password file"""
         with open(self._password_file) as file:
             pwd = file.readline()
