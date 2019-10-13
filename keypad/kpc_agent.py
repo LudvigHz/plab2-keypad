@@ -57,7 +57,9 @@ class KPCAgent:
         """ Check that the new passwords match """
         if self._current_password == self._temp_password:
             self.update_passcode_file()
-            # TODO add signal to show user if passwords were equal
+            self.led_board.light_multiple_leds([1, 3, 5], 2)
+        else:
+            self.led_board.light_multiple_leds([2, 4, 6], 2)
 
     def cache_first_password(self):
         """ Cache first password in order to compare passwords later """
