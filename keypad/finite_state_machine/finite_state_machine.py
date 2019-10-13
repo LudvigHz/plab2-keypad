@@ -48,7 +48,8 @@ class FiniteStateMachine:
         """use the consequent of a rule to set the next state of the FSM AND call the appropriate
         agent action method"""
         self._current_state = rule.new_state
-        rule.action(self._current_signal)
+        if rule.action is not None:
+            rule.action(self._current_signal)
 
     def main_loop(self):
         """begin in the FSM’s default initial state and then repeatedly call get next signal and
@@ -73,6 +74,10 @@ def rules(agent):
         Rule(
             STATES.ACTIVE, signal_is_asterisk, STATES.READ2, agent.init_passcode_entry
         ),
+        Rule(STATES.ACTIVE, signal_is_digit, STATES.LED, agent.set_led),
+        Rule(STATES.LED, signal_is_asterisk, STATES.TIME),
+        Rule(STATES.TIME, signal_is_digit, STATES.TIME, agent.append_time_digit),
+        Rule(STATES.TIME, signal_is_asterisk, STATES.ACTIVE, agent.light_one_led),
         Rule(STATES.READ2, signal_is_digit, STATES.READ2, agent.append_password),
         Rule(
             STATES.READ2, signal_is_asterisk, STATES.READ3, agent.cache_first_password

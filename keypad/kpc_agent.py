@@ -22,7 +22,7 @@ class KPCAgent:
         self._temp_password = []
 
         self._led_id = None
-        self._led_dur = None
+        self._led_dur = ""
 
     def init_passcode_entry(self):
         """ Clear the passcode-buffer and initiate a ”power up” lighting sequence on the LED
@@ -85,6 +85,8 @@ class KPCAgent:
         """ Resets agent to initial state """
         self.override_signal = ""
         self._current_password = []
+        self._led_dur = ""
+        self._led_id = None
 
     def update_passcode_file(self):
         """ Update passcode file with the new passcode """
@@ -103,9 +105,17 @@ class KPCAgent:
             file.write(pwd)
             file.truncate()
 
-    def _light_one_led(self):
+    def set_led(self, signal):
+        """Set led id"""
+        self._led_id = int(signal)
+
+    def append_time_digit(self, signal):
+        """Set led lighting duration"""
+        self._led_dur += signal
+
+    def light_one_led(self):
         """Light led according to led_id and led_duration"""
-        self.led_board.light_led(self._led_id, self._led_dur)
+        self.led_board.light_led(self._led_id, int(self._led_dur))
 
     def _flash_leds(self, seconds=3):
         """Flash all leds"""
