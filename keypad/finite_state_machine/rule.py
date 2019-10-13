@@ -38,15 +38,18 @@ class Rule:
             return True
         return False
 
-    def get_new_state(self) -> str:
+    @property
+    def new_state(self) -> str:
         """Gets the next state"""
         return self._new_state
 
-    def get_action(self):
+    @property
+    def action(self):
         """Gets the action"""
         return self._action
 
-    def get_trigger_signal(self):
+    @property
+    def trigger_signal(self):
         """Gets the trigger signal"""
         return self._trigger_signal
 

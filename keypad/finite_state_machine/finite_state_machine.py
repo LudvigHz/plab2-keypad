@@ -1,6 +1,9 @@
 """Module contains class for the finite state machine"""
 
-from keypad.finite_state_machine.rule import *
+from keypad.finite_state_machine.rule import (STATES, Rule, signal_is_anything,
+                                              signal_is_asterisk,
+                                              signal_is_digit,
+                                              signal_is_override)
 from keypad.kpc_agent import KPCAgent
 
 RULES = [
@@ -63,8 +66,8 @@ class FiniteStateMachine:
     def _fire_rule(self, rule: Rule):
         """use the consequent of a rule to set the next state of the FSM AND call the appropriate
         agent action method"""
-        self._current_state = rule.get_new_state()
-        rule.get_action()(self._current_signal)
+        self._current_state = rule.new_state
+        rule.action(self._current_signal)
 
     def main_loop(self):
         """begin in the FSM’s default initial state and then repeatedly call get next signal and

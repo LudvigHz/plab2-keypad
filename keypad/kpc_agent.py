@@ -1,7 +1,8 @@
 """File contains the KPC agent"""
 from functools import reduce
 
-from finite_state_machine.rule import signal_is_digit
+from keypad import constants
+from keypad.finite_state_machine.rule import signal_is_digit
 from keypad.keypad import Keypad
 from keypad.led_board import LEDBoard
 
@@ -10,12 +11,14 @@ class KPCAgent:
     """The agent communicating with the finite state machine, keypad and led board"""
 
     def __init__(self):
+        self._password_file = "pwd.txt"
+
         self.led_board = LEDBoard()
         self.led_board.setup()
         self.keypad = Keypad()
         self.override_signal = ""
         self._current_password = []
-        self._password = ""
+        self._password = self._get_password_from_file()
         self._temp_password = []
 
         self._led_id = None
@@ -44,10 +47,11 @@ class KPCAgent:
         """Check that the password just entered via the keypad matches that in the password file.
         Store the result (Y or N) in the override-signal and light the leds appropriately"""
         current_password_as_string = convert_list_to_string(self._current_password)
-        self.override_signal = (
-            "Y" if current_password_as_string == self._password else "N"
-        )
-        # TODO add signal to show user whether login was correct or not
+        if current_password_as_string == self._password:
+            self.override_signal = constants.OVERRIDE_SIGNAL_PASSWORD_ACCEPTED
+            self._twinkle_leds()
+        else:
+            self.override_signal = constants.OVERRIDE_SIGNAL_PASSWORD_DECLINED
 
     def compare_new_passwords(self):
         """ Check that the new passwords match """
@@ -82,7 +86,20 @@ class KPCAgent:
 
     def update_passcode_file(self):
         """ Update passcode file with the new passcode """
-        # TODO add file handling
+        self._write_password_to_file(convert_list_to_string(self._current_password))
+
+    def _get_password_from_file(self):
+        """Gets the password from the password file"""
+        with open(self._password_file) as file:
+            pwd = file.readline()
+        return pwd
+
+    def _write_password_to_file(self, pwd):
+        """Write password to file"""
+        with open(self._password_file) as file:
+            file.seek(0)
+            file.write(pwd)
+            file.truncate()
 
     def _light_one_led(self):
         """Light led according to led_id and led_duration"""
