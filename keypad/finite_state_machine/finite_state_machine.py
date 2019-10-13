@@ -3,7 +3,8 @@
 from keypad.finite_state_machine.rule import (STATES, Rule, signal_is_anything,
                                               signal_is_asterisk,
                                               signal_is_digit,
-                                              signal_is_override)
+                                              signal_is_override,
+                                              signal_is_square)
 from keypad.kpc_agent import KPCAgent
 
 
@@ -75,6 +76,8 @@ def rules(agent):
             STATES.ACTIVE, signal_is_asterisk, STATES.READ2, agent.init_passcode_entry
         ),
         Rule(STATES.ACTIVE, signal_is_digit, STATES.LED, agent.set_led),
+        Rule(STATES.ACTIVE, signal_is_square, STATES.LOGOUT),
+        Rule(STATES.LOGOUT, signal_is_square, STATES.INIT, agent.reset_agent),
         Rule(STATES.LED, signal_is_asterisk, STATES.TIME),
         Rule(STATES.TIME, signal_is_digit, STATES.TIME, agent.append_time_digit),
         Rule(STATES.TIME, signal_is_asterisk, STATES.ACTIVE, agent.light_one_led),

@@ -15,6 +15,7 @@ class STATES:
     END = "END"
     TIME = "TIME"
     LED = "LED"
+    LOGOUT = "LOGOUT"
 
 
 class Rule:
