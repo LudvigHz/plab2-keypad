@@ -42,6 +42,7 @@ class KPCAgent:
     def append_password(self, char: str):
         """ Append a char to the current password """
         self._current_password.append(char)
+        self.led_board.light_led(1)
 
     def verify_login(self, *args):
         """Check that the password just entered via the keypad matches that in the password file.
