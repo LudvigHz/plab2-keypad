@@ -1,5 +1,6 @@
 """File contains the rule class used in finite_state_machine functions for trigger signal and the
 legal states"""
+from keypad import constants
 
 
 class STATES:
@@ -12,6 +13,9 @@ class STATES:
     READ2 = "READ2"
     READ3 = "READ3"
     END = "END"
+    TIME = "TIME"
+    LED = "LED"
+    LOGOUT = "LOGOUT"
 
 
 class Rule:
@@ -23,7 +27,7 @@ class Rule:
     _new_state = None
     _action = None
 
-    def __init__(self, trigger_state: str, trigger_signal, new_state: str, action):
+    def __init__(self, trigger_state: str, trigger_signal, new_state: str, action=None):
         if not hasattr(STATES, trigger_state) or not hasattr(STATES, new_state):
             raise ValueError("ILLEGAL STATE CHOSEN")
 
@@ -38,15 +42,18 @@ class Rule:
             return True
         return False
 
-    def get_new_state(self) -> str:
+    @property
+    def new_state(self) -> str:
         """Gets the next state"""
         return self._new_state
 
-    def get_action(self):
+    @property
+    def action(self):
         """Gets the action"""
         return self._action
 
-    def get_trigger_signal(self):
+    @property
+    def trigger_signal(self):
         """Gets the trigger signal"""
         return self._trigger_signal
 
@@ -73,5 +80,12 @@ def signal_is_asterisk(signal: str) -> bool:
 def signal_is_square(signal: str) -> bool:
     """Returns true if signal is square"""
     if signal == "#":
+        return True
+    return False
+
+
+def signal_is_override(signal: str) -> bool:
+    """ Returns true if signal is the override_signal """
+    if signal == constants.OVERRIDE_SIGNAL_PASSWORD_ACCEPTED:
         return True
     return False

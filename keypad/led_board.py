@@ -1,7 +1,6 @@
 """
 Module containing LEDBoard controller class
 """
-import os
 import time
 
 from keypad.utils import Charlieplexer
@@ -57,6 +56,15 @@ class LEDBoard:
             time.sleep(speed)
         self.turn_off_all_leds()  # reset state
 
+    def flash_leds(self, leds, seconds, **kwargs):
+        """Flash multiple LEDs for <time> seconds. Optional param speed (lower is faster)"""
+        speed = kwargs.get("speed", 0.2)
+        start = time.time()
+        while time.time() - start < seconds - speed:
+            self.charlieplexer.enable_multiple(leds, speed)
+            time.sleep(speed)
+        self.turn_off_all_leds()  # reset state
+
     def twinkle_all_leds(self, seconds, **kwargs):
         """Twinkle all LEDs for <time> seconds in order. Optional param speed (lower is faster)"""
         speed = kwargs.get("speed", 0.3)
@@ -78,7 +86,4 @@ class LEDBoard:
 
     def shut_down_sequence(self):
         """Start the shut-down sequence"""
-        order = list(range(1, 7))
-        for _ in range(4):
-            self.twinkle_all_leds(1, order=order)
-            order.reverse()
+        self.flash_leds([2, 4, 6], 3)

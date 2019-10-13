@@ -29,12 +29,6 @@ class KeypadTestCase(unittest.TestCase):
         self.assertEqual("1", poll_result)
         GPIO.set_pin_low(17)
 
-    def test_get_next_signal(self):
-        """ Test get next signal method """
-        GPIO.set_pin_high(27)
-        result = self.keypad.get_next_signal()
-        self.assertEqual("3", result)
-
 
 if __name__ == "__main__":
     unittest.main()
