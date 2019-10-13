@@ -40,7 +40,7 @@ class Keypad:
         """ Setup pins for use of the keypad """
         GPIO.setmode(GPIO.BCM)
         for row_pin in Keypad.ROW_PINS:
-            GPIO.setup(row_pin, GPIO.OUT)
+            GPIO.setup(row_pin, GPIO.OUT, initial=GPIO.LOW)
         for column_pin in Keypad.COLUMN_PINS:
             GPIO.setup(column_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
@@ -66,6 +66,9 @@ class Keypad:
         """ Poll until a key is pressed """
 
         key_pressed = None
+        debounce_press = "a"
         while key_pressed is None:
             key_pressed = self.do_polling()
+        while debounce_press is not None:
+            debounce_press = self.do_polling()
         return key_pressed
