@@ -81,6 +81,8 @@ class KPCAgent:
     def fully_activate_agent(self, *args):
         """ Complete login and activate all functionality """
         # TODO add functionality to this method if it is supposed to do something
+        self.override_signal = ""
+        self._led_id = None
 
     def reset_agent(self, *args):
         """ Resets agent to initial state """
