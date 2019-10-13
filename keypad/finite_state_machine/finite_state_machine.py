@@ -6,26 +6,6 @@ from keypad.finite_state_machine.rule import (STATES, Rule, signal_is_anything,
                                               signal_is_override)
 from keypad.kpc_agent import KPCAgent
 
-RULES = [
-    Rule(STATES.INIT, signal_is_anything, STATES.READ, KPCAgent.init_passcode_entry),
-    Rule(STATES.READ, signal_is_digit, STATES.READ, KPCAgent.append_password),
-    Rule(STATES.READ, signal_is_asterisk, STATES.VERIFY, KPCAgent.verify_login),
-    Rule(STATES.READ, signal_is_anything, STATES.INIT, KPCAgent.reset_agent),
-    Rule(
-        STATES.VERIFY, signal_is_override, STATES.ACTIVE, KPCAgent.fully_activate_agent
-    ),
-    Rule(STATES.VERIFY, signal_is_anything, STATES.INIT, KPCAgent.reset_agent),
-    Rule(STATES.ACTIVE, signal_is_asterisk, STATES.READ2, KPCAgent.init_passcode_entry),
-    Rule(STATES.READ2, signal_is_digit, STATES.READ2, KPCAgent.append_password),
-    Rule(STATES.READ2, signal_is_asterisk, STATES.READ3, KPCAgent.cache_first_password),
-    Rule(STATES.READ2, signal_is_anything, STATES.ACTIVE, KPCAgent.reset_agent),
-    Rule(STATES.READ3, signal_is_digit, STATES.READ3, KPCAgent.append_password),
-    Rule(
-        STATES.READ3, signal_is_asterisk, STATES.ACTIVE, KPCAgent.compare_new_passwords
-    ),
-    Rule(STATES.READ3, signal_is_anything, STATES.ACTIVE, KPCAgent.reset_agent),
-]
-
 
 class FiniteStateMachine:
     """Rule-based finite state machine that asks agent for input, applies rules and reacts
@@ -39,6 +19,7 @@ class FiniteStateMachine:
     def __init__(self, agent):
         """Add the correct rules to the rule list"""
         self._agent = agent
+        self._rule_list = rules(agent)
 
     def add_rule(self, rule: Rule):
         """Appends a new rule to the end of the FSM’s rule list"""
@@ -76,3 +57,31 @@ class FiniteStateMachine:
             self._get_next_signal()
             self._run_rules()
         self._agent.exit_action()
+
+
+def rules(agent):
+    """ List of the rules for the fsm """
+    RULES = [
+        Rule(STATES.INIT, signal_is_anything, STATES.READ, agent.init_passcode_entry),
+        Rule(STATES.READ, signal_is_digit, STATES.READ, agent.append_password),
+        Rule(STATES.READ, signal_is_asterisk, STATES.VERIFY, agent.verify_login),
+        Rule(STATES.READ, signal_is_anything, STATES.INIT, agent.reset_agent),
+        Rule(
+            STATES.VERIFY, signal_is_override, STATES.ACTIVE, agent.fully_activate_agent
+        ),
+        Rule(STATES.VERIFY, signal_is_anything, STATES.INIT, agent.reset_agent),
+        Rule(
+            STATES.ACTIVE, signal_is_asterisk, STATES.READ2, agent.init_passcode_entry
+        ),
+        Rule(STATES.READ2, signal_is_digit, STATES.READ2, agent.append_password),
+        Rule(
+            STATES.READ2, signal_is_asterisk, STATES.READ3, agent.cache_first_password
+        ),
+        Rule(STATES.READ2, signal_is_anything, STATES.ACTIVE, agent.reset_agent),
+        Rule(STATES.READ3, signal_is_digit, STATES.READ3, agent.append_password),
+        Rule(
+            STATES.READ3, signal_is_asterisk, STATES.ACTIVE, agent.compare_new_passwords
+        ),
+        Rule(STATES.READ3, signal_is_anything, STATES.ACTIVE, agent.reset_agent),
+    ]
+    return RULES
