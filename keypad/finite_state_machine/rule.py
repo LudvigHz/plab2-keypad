@@ -1,5 +1,6 @@
 """File contains the rule class used in finite_state_machine functions for trigger signal and the
 legal states"""
+from keypad import constants
 
 
 class STATES:
@@ -38,15 +39,18 @@ class Rule:
             return True
         return False
 
-    def get_new_state(self) -> str:
+    @property
+    def new_state(self) -> str:
         """Gets the next state"""
         return self._new_state
 
-    def get_action(self):
+    @property
+    def action(self):
         """Gets the action"""
         return self._action
 
-    def get_trigger_signal(self):
+    @property
+    def trigger_signal(self):
         """Gets the trigger signal"""
         return self._trigger_signal
 
@@ -79,6 +83,6 @@ def signal_is_square(signal: str) -> bool:
 
 def signal_is_override(signal: str) -> bool:
     """ Returns true if signal is the override_signal """
-    if signal == "Y":
+    if signal == constants.OVERRIDE_SIGNAL_PASSWORD_ACCEPTED:
         return True
     return False

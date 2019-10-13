@@ -1,7 +1,6 @@
 """
 Module containing LEDBoard controller class
 """
-import os
 import time
 
 from keypad.utils import Charlieplexer
